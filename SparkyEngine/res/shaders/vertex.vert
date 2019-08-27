@@ -5,7 +5,7 @@ layout (location = 1) in vec4 color;
 
 uniform mat4 model = mat4(1.0f);
 uniform mat4 view = mat4(1.0f);
-uniform mat4 projection = mat4(1.0f);
+uniform mat4 projection;
 
 out data
 {

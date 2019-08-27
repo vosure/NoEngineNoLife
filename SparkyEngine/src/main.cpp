@@ -12,11 +12,13 @@
 #include "graphics/sprite.h"
 #include "graphics/staticSprite.h"
 
+#include "utils/timer.h"
+
 #include <time.h>
 
 #include <iostream>
 
-#define BATCH_RENDERING 0
+#define BATCH_RENDERING 1
 
 int main()
 {
@@ -26,7 +28,6 @@ int main()
 
 	Window window(800, 600, "Hello Engine");
 
-	mat4 model = mat4::translation(vec3(4, 3, 0));
 	mat4 projection = mat4::orthographic(0, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
 	Shader shader("res/shaders/vertex.vert", "res/shaders/fragment.frag");
@@ -40,7 +41,7 @@ int main()
 #if BATCH_RENDERING
 	for (float y = 0; y < 9.0f; y+=0.1)
 	{
-		for (float x; x < 16.0f; x += 0.1)
+		for (float x = 0; x < 16.0f; x += 0.1)
 		{
 			float red = rand() % 1000 / 1000.0f;
 			float green = rand() % 1000 / 1000.0f;
@@ -63,6 +64,10 @@ int main()
 	SimpleRenderer2D renderer;
 #endif
 
+	Timer timer;
+	float time = 0;
+	unsigned int fps = 0;
+
 	while (!window.close())
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -70,6 +75,10 @@ int main()
 		double x, y;
 		window.getCursorPosition(x, y);
 		shader.setUniform2f("light_position", vec2((float)(x * 16.0f / 800.0f), (float)(9.0f - y * 9.0f / 600.0f)));
+
+		//mat4 model = mat4::rotation(timer.elapsed() * 100.0f, vec3(0.0f, 1.0f, 1.0f));
+		//shader.setUniformMat4("model", model);
+
 
 #if BATCH_RENDERING
 		renderer.begin();
@@ -84,6 +93,13 @@ int main()
 		renderer.flush();
 
 		window.update();
+		fps++;
+		if (timer.elapsed() - time > 1.0f)
+		{
+			time += 1.0f;
+			printf("%d fps\n", fps);
+			fps = 0;
+		}
 	}
 
 	return 0;

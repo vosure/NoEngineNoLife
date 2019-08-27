@@ -17,7 +17,7 @@ namespace core {
 			{
 				glfwTerminate();
 			}
-			glClearColor(0.4f, 0.2f, 0.45f, 1.0f);
+			glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
 
 			for (int i = 0; i < MAX_KEYS; i++)
 			{
@@ -85,7 +85,7 @@ namespace core {
 			glfwSetKeyCallback(m_Window, keyboard_callback);
 			glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 			glfwSetCursorPosCallback(m_Window, mouse_cursor_callback);
-
+			glfwSwapInterval(0.0);
 			if (glewInit() != GLEW_OK)
 			{
 				std::cout << "CANNOT INITIALIZE GLEW" << std::endl;

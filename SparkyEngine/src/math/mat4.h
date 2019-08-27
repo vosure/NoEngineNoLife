@@ -7,7 +7,12 @@ namespace core {
 
 		struct mat4
 		{
-			float elements[4 * 4];
+			union
+			{
+				float elements[4 * 4];
+				vec4 columns[4];
+			};
+
 
 			mat4();
 			mat4(float diagonal);
@@ -23,10 +28,16 @@ namespace core {
 			static mat4 translation(const vec3 &translation);
 			static mat4 rotation(const float angle, const vec3 &axis);
 			static mat4 scale(const vec3 &scale);
+
+			inline vec4 getColumn(int index) const
+			{
+				index *= 4;
+				return vec4(elements[index], elements[index + 1], elements[index + 2], elements[index + 3]);
+			}
 		};
 
 		mat4 operator*(mat4 left, const mat4 &right);
-	
+
 		inline float toRadians(float degrees)
 		{
 			return degrees * (M_PI) / 180.0f;

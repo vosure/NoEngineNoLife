@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "renderer2d.h"
-
+#include <cstddef>
 
 namespace core {
 	namespace graphics {

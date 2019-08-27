@@ -31,6 +31,7 @@ namespace core {
 
 		mat4 &mat4::multiply(const mat4 & other)
 		{
+			float data[16];
 			for (int x = 0; x < 4; x++)
 			{
 				for (int y = 0; y < 4; y++)
@@ -40,9 +41,12 @@ namespace core {
 					{
 						result += elements[x + k * 4] * other.elements[k + x * 4];
 					}
-					elements[x + y * 4] = result;
+					data[x + y * 4] = result;
 				}
 			}
+
+			memcpy(elements, data, 16 * sizeof(float));
+
 			return *this;
 		}
 
@@ -106,17 +110,17 @@ namespace core {
 
 			mat4 result(1.0f);
 
-			result.elements[0 * 0 * 4] = cosine + (rX * rX) * oneMinusCos;
-			result.elements[1 * 0 * 4] = rY * rX * oneMinusCos + rZ * sine;
-			result.elements[2 * 0 * 4] = rZ * rX* oneMinusCos - rY * sine;
+			result.elements[0 + 0 * 4] = cosine + (rX * rX) * oneMinusCos;
+			result.elements[1 + 0 * 4] = rY * rX * oneMinusCos + rZ * sine;
+			result.elements[2 + 0 * 4] = rZ * rX* oneMinusCos - rY * sine;
 
-			result.elements[0 * 1 * 4] = rX * rY * oneMinusCos - rZ *sine;
-			result.elements[1 * 1 * 4] = cosine + (rY * rY) * oneMinusCos;
-			result.elements[2 * 1 * 4] = rZ * rY *oneMinusCos + rX *sine;
-
-			result.elements[0 * 2 * 4] = rX * rZ *oneMinusCos + rY * sine;
-			result.elements[1 * 2 * 4] = rY * rZ *oneMinusCos - rX * sine;
-			result.elements[2 * 2 * 4] = cosine + (rZ * rZ) * oneMinusCos;
+			result.elements[0 + 1 * 4] = rX * rY * oneMinusCos - rZ * sine;
+			result.elements[1 + 1 * 4] = cosine + (rY * rY) * oneMinusCos;
+			result.elements[2 + 1 * 4] = rZ * rY *oneMinusCos + rX * sine;
+							  
+			result.elements[0 + 2 * 4] = rX * rZ *oneMinusCos + rY * sine;
+			result.elements[1 + 2 * 4] = rY * rZ *oneMinusCos - rX * sine;
+			result.elements[2 + 2 * 4] = cosine + (rZ * rZ) * oneMinusCos;
 
 			return result;
 		}

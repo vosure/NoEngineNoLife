@@ -33,20 +33,27 @@ namespace core {
 			const math::vec2 &size = renderable->getSize();
 			const math::vec4 &color = renderable->getColor();
 
+			int r = color.x * 255.0f;
+			int g = color.y * 255.0f;
+			int b = color.z * 255.0f;
+			int a = color.w * 255.0f;
+
+			unsigned int unsigned_color = a << 24 | b << 16 | g << 8 | r;
+
 			m_BufferData->vertex = position;
-			m_BufferData->color = color;
+			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
 			m_BufferData->vertex = math::vec3(position.x + size.x, position.y, position.z);
-			m_BufferData->color = color;
+			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
 			m_BufferData->vertex = math::vec3(position.x, position.y + size.y, position.z);
-			m_BufferData->color = color;
+			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
 			m_BufferData->vertex = math::vec3(position.x + size.x, position.y + size.y, position.z);
-			m_BufferData->color = color;
+			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
 			m_IndicesCount += 6;
@@ -57,7 +64,7 @@ namespace core {
 			glBindVertexArray(m_VAO);
 			m_IBO->bind();
 
-			glDrawElements(GL_TRIANGLES, m_IndicesCount, GL_UNSIGNED_INT, NULL);
+			glDrawElements(GL_TRIANGLES, m_IndicesCount, GL_UNSIGNED_SHORT, NULL);
 
 			m_IBO->unbind();
 			glBindVertexArray(0);
@@ -77,7 +84,7 @@ namespace core {
 			glVertexAttribPointer(ATTRIB_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (void *)0);
 			glEnableVertexAttribArray(ATTRIB_VERTEX_INDEX);
 
-			glVertexAttribPointer(ATTRIB_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (void *)(3 * sizeof(float)));
+			glVertexAttribPointer(ATTRIB_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (void *)(offsetof(VertexData, VertexData::color)));
 			glEnableVertexAttribArray(ATTRIB_COLOR_INDEX);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
