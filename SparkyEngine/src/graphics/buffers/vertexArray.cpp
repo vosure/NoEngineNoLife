@@ -15,6 +15,8 @@ namespace core {
 			{
 				delete m_Buffers[i];
 			}
+
+			glDeleteVertexArrays(1, &m_ID);
 		}
 
 		void VertexArray::addBuffer(VertexBuffer *buffer, unsigned int location)

@@ -9,8 +9,8 @@
 namespace core {
 	namespace graphics {
 
-#define MAX_KEYS  1024
-#define MAX_MOUSE_BUTTONS 32	
+		#define MAX_KEYS  1024
+		#define MAX_MOUSE_BUTTONS 32	
 
 		class Window
 		{

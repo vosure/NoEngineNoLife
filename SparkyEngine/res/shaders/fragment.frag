@@ -2,7 +2,16 @@
 
 out vec4 color;
 
+uniform vec2 light_position;
+
+in data
+{
+	vec4 position;
+	vec4 color;
+}fragment_in;
+
 void main()
 {
-	color = vec4(0.7, 0.5, 0.7, 1.0);
+	float intensity = 1.0 / length(fragment_in.position.xy - light_position);
+	color = fragment_in.color * intensity;
 }

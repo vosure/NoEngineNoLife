@@ -28,6 +28,36 @@ namespace core {
 			glUseProgram(0);
 		}
 
+		void Shader::setUniform1f(const char * name, float value)
+		{
+			glUniform1f(getUniformLocation(name), value);
+		}
+
+		void Shader::setUniform1i(const char * name, int value)
+		{
+			glUniform1f(getUniformLocation(name), value);
+		}
+
+		void Shader::setUniform2f(const char * name, const math::vec2 & vec)
+		{
+			glUniform2f(getUniformLocation(name), vec.x, vec.y);
+		}
+
+		void Shader::setUniform3f(const char * name, const math::vec3 & vec)
+		{
+			glUniform3f(getUniformLocation(name), vec.x, vec.y, vec.z);
+		}
+
+		void Shader::setUniform4f(const char * name, const math::vec4 & vec)
+		{
+			glUniform4f(getUniformLocation(name), vec.x, vec.y, vec.z, vec.w);
+		}
+
+		void Shader::setUniformMat4(const char * name, const math::mat4 & mat)
+		{
+			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, mat.elements);
+		}
+
 		unsigned int Shader::init()
 		{
 			unsigned int program = glCreateProgram();
@@ -80,6 +110,11 @@ namespace core {
 			glDeleteShader(fragment);
 
 			return program;
+		}
+
+		int Shader::getUniformLocation(const char * name)
+		{
+			return glGetUniformLocation(m_ShaderID, name);
 		}
 
 	}

@@ -14,6 +14,7 @@ namespace core {
 		public:
 			//NOTE(vosure) Actually, "count" is not necessary, we can use sizeof(data) instead 
 			IndexBuffer(unsigned short *indices, unsigned int count);
+			~IndexBuffer();
 			void bind() const;
 			void unbind() const;
 

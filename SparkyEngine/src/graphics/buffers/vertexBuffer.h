@@ -14,6 +14,7 @@ namespace core {
 		public:
 			//NOTE(vosure) Actually, "count" is not necessary, we can use sizeof(data) instead 
 			VertexBuffer(float *data, unsigned int count, unsigned int componentsCount);
+			~VertexBuffer();
 			void bind() const;
 			void unbind() const;
 
