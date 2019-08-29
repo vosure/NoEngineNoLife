@@ -6,7 +6,7 @@
 namespace core {
 	namespace graphics {
 
-#define RENDERER_MAX_SPRITES	50000
+#define RENDERER_MAX_SPRITES	60000
 #define RENDERER_VERTEX_SIZE	sizeof(VertexData)
 #define RENDERER_SPRITE_SIZE	RENDERER_VERTEX_SIZE * 4
 #define RENDERER_BUFFER_SIZE	RENDERER_SPRITE_SIZE * RENDERER_MAX_SPRITES
@@ -29,8 +29,8 @@ namespace core {
 			BatchRenderer2D();
 			~BatchRenderer2D();
 
-			void begin();
-			void end();
+			void begin() override;
+			void end() override;
 			void submit(const Renderable2D *renderable) override;
 			void flush() override;
 

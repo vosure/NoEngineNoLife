@@ -19,7 +19,7 @@ namespace core {
 				sprite->getIndexBuffer()->bind();
 
 				sprite->getShader().setUniformMat4("model", math::mat4::translation(sprite->getPosition()));
-				glDrawElements(GL_TRIANGLES, sprite->getIndexBuffer()->getCount(), GL_UNSIGNED_SHORT, nullptr);
+				glDrawElements(GL_TRIANGLES, sprite->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, NULL);
 
 				sprite->getIndexBuffer()->unbind();
 				sprite->getVertexArray()->unbind();

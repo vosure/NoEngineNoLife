@@ -64,7 +64,7 @@ namespace core {
 			glBindVertexArray(m_VAO);
 			m_IBO->bind();
 
-			glDrawElements(GL_TRIANGLES, m_IndicesCount, GL_UNSIGNED_SHORT, NULL);
+			glDrawElements(GL_TRIANGLES, m_IndicesCount, GL_UNSIGNED_INT, NULL);
 
 			m_IBO->unbind();
 			glBindVertexArray(0);
@@ -88,7 +88,7 @@ namespace core {
 			glEnableVertexAttribArray(ATTRIB_COLOR_INDEX);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			unsigned short *indices = new unsigned short[RENDERER_INDICES_SIZE];
+			unsigned int *indices = new unsigned int[RENDERER_INDICES_SIZE];
 
 			int offset = 0;
 			for (int i = 0; i < RENDERER_INDICES_SIZE; i += 6)

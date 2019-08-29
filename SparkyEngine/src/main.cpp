@@ -12,6 +12,8 @@
 #include "graphics/sprite.h"
 #include "graphics/staticSprite.h"
 
+#include "graphics/layers/tileLayer.h"
+
 #include "utils/timer.h"
 
 #include <time.h>
@@ -31,38 +33,23 @@ int main()
 	mat4 projection = mat4::orthographic(0, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
 	Shader shader("res/shaders/vertex.vert", "res/shaders/fragment.frag");
-	shader.bind();
-	shader.setUniformMat4("projection", projection);
+	Shader shader2("res/shaders/vertex.vert", "res/shaders/fragment.frag");
 
-	std::vector<Renderable2D *> sprites;
-
-	srand(time(NULL));
-
-#if BATCH_RENDERING
-	for (float y = 0; y < 9.0f; y+=0.1)
+	TileLayer layer(&shader);
+	
+	for (float y = -9.0f; y < 9.0f; y += 1)
 	{
-		for (float x = 0; x < 16.0f; x += 0.1)
+		for (float x = -16.0f; x < 16.0f; x += 1)
 		{
 			float red = rand() % 1000 / 1000.0f;
 			float green = rand() % 1000 / 1000.0f;
 			float blue = rand() % 1000 / 1000.0f;
-			sprites.push_back(new Sprite(x, y, 0.4f, 0.4f, math::vec4(red, green, blue, 1.0f)));
+			layer.add(new Sprite(x, y, 0.5f, 0.5f, math::vec4(red, green, blue, 1.0f)));
 		}
-	}
-	BatchRenderer2D renderer;
-#else
-	for (float y = 0; y < 9.0f; y+=0.2)
-	{
-		for (float x = 0; x < 16.0f; x+=0.2)
-		{
-			float red = rand() % 1000 / 1000.0f;
-			float green = rand() % 1000 / 1000.0f;
-			float blue = rand() % 1000 / 1000.0f;
-			sprites.push_back(new StaticSprite(x, y, 1.0f, 1.0f, math::vec4(red, green, blue, 1.0f), shader));
-		}
-	}
-	SimpleRenderer2D renderer;
-#endif
+	}	
+
+	TileLayer layer2(&shader2);
+	layer2.add(new Sprite(-2, -2, 4, 4, vec4(1.0f, 0.0f, 0.8f, 1.0f)));
 
 	Timer timer;
 	float time = 0;
@@ -74,25 +61,17 @@ int main()
 
 		double x, y;
 		window.getCursorPosition(x, y);
-		shader.setUniform2f("light_position", vec2((float)(x * 16.0f / 800.0f), (float)(9.0f - y * 9.0f / 600.0f)));
 
-		//mat4 model = mat4::rotation(timer.elapsed() * 100.0f, vec3(0.0f, 1.0f, 1.0f));
-		//shader.setUniformMat4("model", model);
+		shader.bind();
+		shader.setUniform2f("light_position", vec2((float)(x * 32.0f / 960.0f - 16.0f), (float)(9.0f - y * 18.0f / 540.0f)));
 
+		shader2.bind();
+		shader2.setUniform2f("light_position", vec2(-3, -3));
 
-#if BATCH_RENDERING
-		renderer.begin();
-#endif
-		for (int i = 0; i < sprites.size(); i++)
-		{
-			renderer.submit(sprites[i]);
-		}
-#if BATCH_RENDERING
-		renderer.end();
-#endif
-		renderer.flush();
-
+		layer.render();
+		layer2.render();
 		window.update();
+		
 		fps++;
 		if (timer.elapsed() - time > 1.0f)
 		{
