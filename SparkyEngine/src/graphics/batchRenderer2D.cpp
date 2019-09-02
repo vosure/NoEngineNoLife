@@ -12,7 +12,6 @@ namespace core {
 		{
 			delete m_IBO;
 			glDeleteBuffers(1, &m_VBO);
-			glDeleteVertexArrays(1, &m_VAO);
 		}
 
 		void BatchRenderer2D::begin()
@@ -40,19 +39,19 @@ namespace core {
 
 			unsigned int unsigned_color = a << 24 | b << 16 | g << 8 | r;
 
-			m_BufferData->vertex = position;
+			m_BufferData->vertex = *m_TransformationCache * position;
 			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
-			m_BufferData->vertex = math::vec3(position.x + size.x, position.y, position.z);
+			m_BufferData->vertex = *m_TransformationCache * math::vec3(position.x, position.y + size.y, position.z);
 			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
-			m_BufferData->vertex = math::vec3(position.x, position.y + size.y, position.z);
+			m_BufferData->vertex = *m_TransformationCache * math::vec3(position.x + size.x, position.y + size.y, position.z);
 			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
-			m_BufferData->vertex = math::vec3(position.x + size.x, position.y + size.y, position.z);
+			m_BufferData->vertex = *m_TransformationCache * math::vec3(position.x + size.x, position.y, position.z);
 			m_BufferData->color = unsigned_color;
 			m_BufferData++;
 
@@ -74,8 +73,8 @@ namespace core {
 
 		void BatchRenderer2D::init()
 		{
-			glGenBuffers(1, &m_VBO);
 			glGenVertexArrays(1, &m_VAO);
+			glGenBuffers(1, &m_VBO);
 
 			glBindVertexArray(m_VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

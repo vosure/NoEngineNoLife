@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../renderer2d.h"
+#include "../renderable2d.h"
 
 namespace core {
 	namespace graphics {
@@ -17,7 +17,7 @@ namespace core {
 		public:
 			virtual ~Layer();
 			virtual void add(Renderable2D *renderable);
-			void render();
+			virtual void render();
 
 		};
 

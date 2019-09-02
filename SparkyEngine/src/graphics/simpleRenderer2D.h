@@ -1,6 +1,6 @@
 #pragma once
 
-#include "renderer2d.h"
+#include "renderable2d.h"
 #include "staticSprite.h"
 #include <deque>
 

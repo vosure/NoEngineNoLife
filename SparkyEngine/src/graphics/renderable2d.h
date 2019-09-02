@@ -4,6 +4,8 @@
 #include "buffers/vertexBuffer.h"
 #include "buffers/vertexArray.h"
 
+#include "renderer2d.h"
+
 #include "shader.h"
 
 #include "../math/math.h"
@@ -23,6 +25,9 @@ namespace core {
 			math::vec3 m_Position;
 			math::vec2 m_Size;
 			math::vec4 m_Color;
+			
+		protected:
+			Renderable2D() {}
 
 		public:
 			Renderable2D(math::vec3 position, math::vec2 size, math::vec4 color)
@@ -32,6 +37,11 @@ namespace core {
 
 			virtual ~Renderable2D()
 			{
+			}
+
+			virtual void submit(Renderer2D *renderer) const
+			{
+				renderer->submit(this);
 			}
 
 			inline const math::vec3 &getPosition() const { return m_Position; }
